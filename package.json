@@ -3,7 +3,14 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "android": "cd android && ./gradlew clean && cd .. && react-native run-android",
+    "debug": "REACT_DEBUGGER='rndebugger-open --open --port 8081' npm start",
+    "emulator": "cd $ANDROID_SDK_ROOT/tools; emulator @`emulator -list-avds | sed -n 1p`",
+    "ios": "react-native run-ios",
+    "lint": "eslint --fix --ignore-path .eslintignore .gitignore --format=node_modules/eslint-formatter-pretty",
+    "lint-validate": "eslint --ignore-path .eslintignore .gitignore --quiet",
+    "postinstall": "rndebugger-open",
+    "start": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
     "test": "jest"
   },
   "dependencies": {
@@ -11,9 +18,13 @@
     "react-native": "0.56.0"
   },
   "devDependencies": {
+    "babel-eslint": "^8.2.5",
     "babel-jest": "23.2.0",
     "babel-preset-react-native": "^5",
+    "eslint": "^5.0.1",
+    "eslint-plugin-react": "^7.10.0",
     "jest": "23.3.0",
+    "react-native-debugger-open": "^0.3.17",
     "react-test-renderer": "16.4.1"
   },
   "jest": {
