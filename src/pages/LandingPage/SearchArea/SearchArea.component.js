@@ -13,8 +13,8 @@ export default class SearchArea extends Component {
       <View style={styles.container}>
         <Text style={styles.title}>
           <Text style={styles.mainText}>Blocking</Text>
-          <Text style={styles.secondaryText}>    OR   </Text>
-          <Text style={styles.mainText}>Blocked</Text>
+          <Text style={styles.secondaryText}>    OR     </Text>
+          <Text style={styles.mainText}>Blocked?</Text>
         </Text>
 
         <View style={styles.seperator}/>

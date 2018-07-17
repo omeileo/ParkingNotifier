@@ -1,13 +1,12 @@
 'use strict'
 
+// External Dependencies
 import { Dimensions, StyleSheet } from 'react-native'
 
 const { height: viewportHeight } = Dimensions.get('window')
 
 export default StyleSheet.create({
-  container: {
-    alignItems: 'center'
-  },
+  container: {},
 
   header: {
     alignItems: 'center',
@@ -15,6 +14,7 @@ export default StyleSheet.create({
   },
 
   headerImage: {
-    height: '100%'
+    height: '100%',
+    resizeMode: 'cover'
   }
 })

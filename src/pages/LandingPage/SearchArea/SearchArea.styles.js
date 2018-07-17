@@ -5,25 +5,16 @@ import { StyleSheet } from 'react-native'
 
 // Internal Dependencies
 import colors from '../../../shared/styles/colorPalette.styles'
+import { card , icon} from '../../../shared/styles/appDefault.styles'
 
 export default StyleSheet.create({
   container: {
     width: '93%',
-    backgroundColor: colors.white,
-    paddingHorizontal: 15,
-    paddingTop: 15,
     paddingBottom: 20,
     marginTop: -70,
-    borderRadius: 5,
     
-    // Android Shadow
-    elevation: 10,
-
-    // iOS Shadow
-    shadowOffset: { width: 0, height: 5 },
-    shadowColor: colors.black,
-    shadowOpacity: 0.5,
-    shadowRadius: 15
+    ...card.container,
+    ...card.shadow
   },
 
   title: {
@@ -63,14 +54,7 @@ export default StyleSheet.create({
     borderRadius: 25,
     backgroundColor: colors.blue,
 
-    // Android Shadow
-    elevation: 10,
-
-    // iOS Shadow
-    shadowOffset: { width: 0, height: 5 },
-    shadowColor: colors.black,
-    shadowOpacity: 0.5,
-    shadowRadius: 6
+    ...icon.shadow
   },
 
   placeholderText: {},
@@ -83,14 +67,7 @@ export default StyleSheet.create({
     borderRadius: 25,
     backgroundColor: colors.blue,
 
-    // Android Shadow
-    elevation: 10,
-
-    // iOS Shadow
-    shadowOffset: { width: 0, height: 5 },
-    shadowColor: colors.black,
-    shadowOpacity: 0.5,
-    shadowRadius: 6
+    ...icon.shadow
   },
 
   searchIconImage: {
