@@ -5,12 +5,12 @@ import { StyleSheet } from 'react-native'
 
 // Internal Dependencies
 import colors from '../../../shared/styles/colorPalette.styles'
-import { card , icon} from '../../../shared/styles/appDefault.styles'
+import * as DefaultStyles from '../../../shared/styles/appDefault.styles'
 
 export default StyleSheet.create({
   container: {
-    ...card.container,
-    ...card.shadow,
+    ...DefaultStyles.card.container,
+    ...DefaultStyles.card.shadow,
     paddingBottom: 20,
     width: '92%',
     alignSelf: 'center'
@@ -23,14 +23,26 @@ export default StyleSheet.create({
   },
 
   mainText: {
-    fontSize: 24,
+    ...DefaultStyles.font.size.h1,
     fontWeight: '500'
   },
 
   secondaryText: {
-    fontSize: 14,
+    ...DefaultStyles.font.size.h4,
     fontStyle: 'italic',
     fontWeight: '500'
+  },
+
+  orText: {
+    marginHorizontal: '2.6%',
+    justifyContent: 'center'
+  },
+
+  verticalSeparator: {
+    width: 1.2,
+    height: '95%',
+    marginHorizontal: '4.7%',
+    backgroundColor: colors.black
   },
 
   seperator: {
@@ -48,7 +60,7 @@ export default StyleSheet.create({
   },
 
   searchField: {
-    ...icon.shadow,
+    ...DefaultStyles.icon.shadow,
     height: 50,
     width: '80%',
     borderRadius: 25,
@@ -60,7 +72,7 @@ export default StyleSheet.create({
   searchText: {},
 
   searchIcon: {
-    ...icon.shadow,
+    ...DefaultStyles.icon.shadow,
     height: 50,
     width: 50,
     borderRadius: 25,
@@ -68,7 +80,7 @@ export default StyleSheet.create({
   },
 
   searchIconImage: {
-    ...icon.size.large,
+    ...DefaultStyles.icon.size.large,
     flex: 1,
     alignSelf: 'center',
   }

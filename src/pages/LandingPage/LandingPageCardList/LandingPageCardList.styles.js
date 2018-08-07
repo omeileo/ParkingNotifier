@@ -5,6 +5,7 @@ import { StyleSheet } from 'react-native'
 
 // Internal Dependencies
 import colors from '../../../shared/styles/colorPalette.styles'
+import { font } from '../../../shared/styles/appDefault.styles'
 
 export default StyleSheet.create({
   container: {
@@ -17,7 +18,7 @@ export default StyleSheet.create({
   },
 
   listHeader: {
-    fontSize: 14,
+    ...font.size.h4,
     color: colors.black,
     alignSelf: 'center',
     paddingBottom: 15

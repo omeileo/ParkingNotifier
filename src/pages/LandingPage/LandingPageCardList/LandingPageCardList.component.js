@@ -14,7 +14,7 @@ import styles from './LandingPageCardList.styles'
 
 const LandingPageCardList = function ({ allUsers, interactionList }) {
   const getInteractionList = function dynamicallyGenerateVerboseInteractionList () {
-    const noInteractions = _.isEmpty(interactionList)
+    const noInteractions = _.isEmpty(interactionList) || _.isUndefined(interactionList)
 
     if (noInteractions) {
       return (

@@ -5,12 +5,12 @@ import { Dimensions, StyleSheet } from 'react-native'
 
 // Internal Dependencies
 import colors from '../../../shared/styles/colorPalette.styles'
-import { card } from '../../../shared/styles/appDefault.styles'
+import * as DefaultStyles from '../../../shared/styles/appDefault.styles'
 
 export default StyleSheet.create({
   container: {
-    ...card.container,
-    ...card.shadow,
+    ...DefaultStyles.card.container,
+    ...DefaultStyles.card.shadow,
     flexDirection: 'row',
     height: 85,
     marginBottom: 15
@@ -32,19 +32,19 @@ export default StyleSheet.create({
   },
 
   mainText: {
-    fontSize: 18,
+    ...DefaultStyles.font.size.h3,
     color: colors.black
   },
 
   secondaryText: {
-    fontSize: 14,
+    ...DefaultStyles.font.size.h4,
     color: colors.black
   },
 
   contactInfo: {},
 
   otherText: {
-    fontSize: 14,
+    ...DefaultStyles.font.size.h4,
     color: colors.blue
   },
 

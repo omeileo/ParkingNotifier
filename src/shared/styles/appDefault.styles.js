@@ -40,3 +40,12 @@ export const icon = {
     }
   }
 }
+
+export const font = {
+  size: {
+    h1: { fontSize: 22 },
+    h2: { fontSize: 20 },
+    h3: { fontSize: 18 },
+    h4: { fontSize: 14 }
+  }
+}

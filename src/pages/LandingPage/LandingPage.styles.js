@@ -14,7 +14,7 @@ export default StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
     position: 'absolute',
-    top: 340
+    top: '51%'
   },
 
   headerImage: {
