@@ -8,11 +8,12 @@ import colors from '../../../shared/styles/colorPalette.styles'
 
 export default StyleSheet.create({
   container: {
-    marginTop: 120
+    paddingTop: 110,
+    paddingHorizontal: '4%'
   },
 
   list: {
-    marginBottom: 25
+    marginBottom: 15
   },
 
   listHeader: {

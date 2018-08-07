@@ -1,13 +1,12 @@
-'use strict'
-
 // Internal Dependencies
-import colors from '../../shared/styles/colorPalette.styles'
+import colors from './colorPalette.styles'
 
 export const card = {
   container: {
+    width: '100%',
     backgroundColor: colors.white,
     padding: 15,
-    borderRadius: 5
+    borderRadius: 5,
   },
 
   shadow: {
@@ -32,5 +31,12 @@ export const icon = {
     shadowColor: colors.black,
     shadowOpacity: 0.5,
     shadowRadius: 6
+  },
+
+  size: {
+    large: {
+      height: 23,
+      width: 23
+    }
   }
 }

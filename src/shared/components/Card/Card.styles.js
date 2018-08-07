@@ -9,13 +9,11 @@ import { card } from '../../../shared/styles/appDefault.styles'
 
 export default StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    width: '93%',
-    height: 85,
-    alignSelf: 'center',
-    marginBottom: 15,
     ...card.container,
-    ...card.shadow
+    ...card.shadow,
+    flexDirection: 'row',
+    height: 85,
+    marginBottom: 15
   },
 
   informationSection: {

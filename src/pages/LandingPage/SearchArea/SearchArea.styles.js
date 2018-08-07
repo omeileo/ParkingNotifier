@@ -9,12 +9,11 @@ import { card , icon} from '../../../shared/styles/appDefault.styles'
 
 export default StyleSheet.create({
   container: {
-    width: '93%',
-    paddingBottom: 20,
-    marginTop: -70,
-    
     ...card.container,
-    ...card.shadow
+    ...card.shadow,
+    paddingBottom: 20,
+    width: '92%',
+    alignSelf: 'center'
   },
 
   title: {
@@ -49,12 +48,11 @@ export default StyleSheet.create({
   },
 
   searchField: {
+    ...icon.shadow,
     height: 50,
     width: '80%',
     borderRadius: 25,
-    backgroundColor: colors.blue,
-
-    ...icon.shadow
+    backgroundColor: colors.blue
   },
 
   placeholderText: {},
@@ -62,18 +60,16 @@ export default StyleSheet.create({
   searchText: {},
 
   searchIcon: {
+    ...icon.shadow,
     height: 50,
     width: 50,
     borderRadius: 25,
-    backgroundColor: colors.blue,
-
-    ...icon.shadow
+    backgroundColor: colors.blue
   },
 
   searchIconImage: {
+    ...icon.size.large,
     flex: 1,
-    height: 23,
-    width: 23,
     alignSelf: 'center',
   }
 })

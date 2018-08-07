@@ -15,12 +15,9 @@ export default class LandingPage extends Component {
   render () {
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Image style={styles.headerImage} source={require('../../assets/images/HeaderImage.png')}/>
-          <SearchArea/>
-        </View>
-
+        <Image style={styles.headerImage} source={require('../../assets/images/HeaderImage.png')}/>
         <LandingPageCardList allUsers={BackendMock.allUsers} interactionList={BackendMock.interactionList}/>
+        <View style={styles.header}><SearchArea/></View>
       </View>
     )
   }

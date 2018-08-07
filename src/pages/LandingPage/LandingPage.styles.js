@@ -6,15 +6,20 @@ import { Dimensions, StyleSheet } from 'react-native'
 const { height: viewportHeight } = Dimensions.get('window')
 
 export default StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1
+  },
 
   header: {
-    alignItems: 'center',
-    height: (62 / 100) * viewportHeight
+    width: '100%',
+    alignSelf: 'center',
+    position: 'absolute',
+    top: 340
   },
 
   headerImage: {
-    height: '100%',
+    width: '100%',
+    height: (62 / 100) * viewportHeight,
     resizeMode: 'cover'
   }
 })

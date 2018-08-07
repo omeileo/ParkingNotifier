@@ -8,7 +8,6 @@ import colors from './shared/styles/colorPalette.styles'
 
 export default StyleSheet.create({
   container: {
-    alignItems: 'center',
-    backgroundColor: colors.white,
+    flex: 1
   }
 })

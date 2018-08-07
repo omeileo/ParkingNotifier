@@ -12,99 +12,88 @@ import Card from '../../../shared/components/Card/Card.component'
 import dictionary from './LandingPageCardList.dictionary'
 import styles from './LandingPageCardList.styles'
 
-export default class LandingPageCardList extends Component {
-  static propTypes = {
-    allUsers: PropTypes.arrayOf(
-      PropTypes.shape({
-        licencePlateNumber: PropTypes.string.isRequired,
-
-        contact: PropTypes.shape({
-          mobileNumber: PropTypes.string,
-          extension: PropTypes.number,
-          emailAddress: PropTypes.string
-        }).isRequired,
-
-        name: PropTypes.shape({
-          firstName: PropTypes.string.isRequired,
-          lastName: PropTypes.string.isRequired
-        }),
-
-        carDetails: PropTypes.shape({
-          color: PropTypes.string,
-          make: PropTypes.string,
-          model: PropTypes.string,
-          year: PropTypes.string,
-        })
-      })
-    ).isRequired,
-
-    interactionList: PropTypes.shape({
-      blockedBy: PropTypes.arrayOf(
-        PropTypes.string.isRequired,
-      ).isRequired,
-
-      blocking: PropTypes.arrayOf(
-        PropTypes.string.isRequired,
-      ).isRequired
-    })
-  }
-
-  getInteractionList = function dynamicallyGenerateVerboseInteractionList () {
-    const { interactionList: { blockedBy, blocking } } = this.props
-    const noInteractions = _.isEmpty(blockedBy) && _.isEmpty(blocking)
+const LandingPageCardList = function ({ allUsers, interactionList }) {
+  const getInteractionList = function dynamicallyGenerateVerboseInteractionList () {
+    const noInteractions = _.isEmpty(interactionList)
 
     if (noInteractions) {
       return (
-        <Card
-          cardImage={require('../../../assets/images/TrafficConeDark.png')}
-          mainText={dictionary.noInteractions.mainText}
-          secondaryText={dictionary.noInteractions.secondaryText}
-        />
+        <View style={styles.container}>
+          <Card
+            cardImage={require('../../../assets/images/TrafficConeDark.png')}
+            mainText={dictionary.noInteractions.mainText}
+            secondaryText={dictionary.noInteractions.secondaryText}
+          />
+        </View>
       )
     } else {
       return (
-        <View>
-          <View style={styles.list}>
-            {!_.isEmpty(blocking) && <Text style={styles.listHeader}>You're Blocking {blocking.length} Vehicles:</Text>}
-            {!_.isEmpty(blocking) &&
-              blocking.map((licencePlateNumber, index) => {
-                return (
-                  <Card
-                    cardImage={require('../../../assets/images/TrafficConeDark.png')}
-                    mainText={licencePlateNumber}
-                    key={index}
-                  />  
-                )
-              })
-            }
-          </View>
+        <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+          { getList(interactionList.blocking, `You're Blocking`) }
+          { getList(interactionList.blockedBy, `You're Blocked By`) }
+        </ScrollView>
+      )
+    }
+  }
 
-          <View style={styles.list}>
-            {!_.isEmpty(blockedBy) && <Text style={styles.listHeader}>You're Blocked By {blockedBy.length} Vehicles:</Text>}
-            {!_.isEmpty(blockedBy) &&
-              blockedBy.map((licencePlateNumber, index) => {
-                return (
-                  <Card
-                    cardImage={require('../../../assets/images/TrafficConeDark.png')}
-                    mainText={licencePlateNumber}
-                    key={index}
-                  />
-                )
-              })
-            }
-            </View>
+  const getList = function (list, beforeText) {
+    if (!_.isEmpty(list)) {
+      return (
+        <View style={styles.list}>
+          <Text style={styles.listHeader}>{beforeText} {list.length} Vehicle{list.length > 1 ? 's' : ''}:</Text>
+          {
+            list.map((licencePlateNumber, index) => {
+              return (
+                <Card
+                  cardImage={require('../../../assets/images/TrafficConeDark.png')}
+                  mainText={licencePlateNumber}
+                  key={index}
+                />  
+              )
+            })
+          }
         </View>
       )
     }
   }
 
-  render () {
-    const { allUsers, interactionList: { blockedBy, blocking } } = this.props
-
-    return (
-      <ScrollView contentContainerStyle={styles.container}>
-        { this.getInteractionList() }
-      </ScrollView>
-    )
-  }
+  return getInteractionList()
 }
+
+LandingPageCardList.propTypes = {
+  allUsers: PropTypes.arrayOf(
+    PropTypes.shape({
+      licencePlateNumber: PropTypes.string.isRequired,
+
+      contact: PropTypes.shape({
+        mobileNumber: PropTypes.string,
+        extension: PropTypes.number,
+        emailAddress: PropTypes.string
+      }).isRequired,
+
+      name: PropTypes.shape({
+        firstName: PropTypes.string.isRequired,
+        lastName: PropTypes.string.isRequired
+      }),
+
+      carDetails: PropTypes.shape({
+        color: PropTypes.string,
+        make: PropTypes.string,
+        model: PropTypes.string,
+        year: PropTypes.string,
+      })
+    })
+  ).isRequired,
+
+  interactionList: PropTypes.shape({
+    blockedBy: PropTypes.arrayOf(
+      PropTypes.string.isRequired,
+    ).isRequired,
+
+    blocking: PropTypes.arrayOf(
+      PropTypes.string.isRequired,
+    ).isRequired
+  })
+}
+
+export default LandingPageCardList
