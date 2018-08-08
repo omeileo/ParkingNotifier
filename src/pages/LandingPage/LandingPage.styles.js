@@ -1,9 +1,10 @@
 'use strict'
 
 // External Dependencies
-import { Dimensions, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 
-const { height: viewportHeight } = Dimensions.get('window')
+// Internal Dependencies
+import { getHeightPercentage } from '../../shared/utilityFunctions'
 
 export default StyleSheet.create({
   container: {
@@ -14,12 +15,12 @@ export default StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
     position: 'absolute',
-    top: '51%'
+    top: '34%'
   },
 
   headerImage: {
     width: '100%',
-    height: (62 / 100) * viewportHeight,
+    height: getHeightPercentage(299),
     resizeMode: 'cover'
   }
 })

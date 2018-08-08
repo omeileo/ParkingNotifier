@@ -6,20 +6,21 @@ import { StyleSheet } from 'react-native'
 // Internal Dependencies
 import colors from '../../../shared/styles/colorPalette.styles'
 import * as DefaultStyles from '../../../shared/styles/appDefault.styles'
+import { getHeightPercentage, getWidthPercentage } from '../../../shared/utilityFunctions'
 
 export default StyleSheet.create({
   container: {
     ...DefaultStyles.card.container,
     ...DefaultStyles.card.shadow,
-    paddingBottom: 20,
-    width: '92%',
+    paddingBottom: getHeightPercentage(20),
+    width: getWidthPercentage(345),
     alignSelf: 'center'
   },
 
   title: {
     flexDirection: 'row',
     alignSelf: 'center',
-    paddingBottom: 10
+    paddingBottom: getHeightPercentage(10)
   },
 
   mainText: {
@@ -56,7 +57,7 @@ export default StyleSheet.create({
   search: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 20
+    paddingTop: getHeightPercentage(20)
   },
 
   searchField: {

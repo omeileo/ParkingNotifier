@@ -1,19 +1,20 @@
 'use strict'
 
 // External Dependencies
-import { Dimensions, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 // Internal Dependencies
 import colors from '../../../shared/styles/colorPalette.styles'
 import * as DefaultStyles from '../../../shared/styles/appDefault.styles'
+import { getHeightPercentage, getWidthPercentage } from '../../../shared/utilityFunctions'
 
 export default StyleSheet.create({
   container: {
     ...DefaultStyles.card.container,
     ...DefaultStyles.card.shadow,
     flexDirection: 'row',
-    height: 85,
-    marginBottom: 15
+    height: getHeightPercentage(85),
+    marginBottom: getHeightPercentage(15)
   },
 
   informationSection: {
@@ -22,9 +23,9 @@ export default StyleSheet.create({
   },
 
   cardImage: {
-    marginRight: 15,
-    height: 35,
-    width: 35,
+    marginRight: getWidthPercentage(15),
+    height: getHeightPercentage(35),
+    width: getHeightPercentage(35),
     resizeMode: 'cover'
   },
   
