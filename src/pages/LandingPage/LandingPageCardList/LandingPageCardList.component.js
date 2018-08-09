@@ -1,8 +1,8 @@
 'use strict'
 
 // External Dependencies
-import React, { Component } from 'react'
-import { Image, ScrollView, Text, View } from 'react-native'
+import React from 'react'
+import { ScrollView, Text, View } from 'react-native'
 
 import PropTypes from 'prop-types'
 import _ from 'lodash'
@@ -12,15 +12,15 @@ import Card from '../../../shared/components/Card/Card.component'
 import dictionary from './LandingPageCardList.dictionary'
 import styles from './LandingPageCardList.styles'
 
-const LandingPageCardList = function ({ allUsers, interactionList }) {
+const LandingPageCardList = function ({ allUsers, interactionList, onScroll }) {
   const getInteractionList = function dynamicallyGenerateVerboseInteractionList () {
-    const noInteractions = _.isEmpty(interactionList) || _.isUndefined(interactionList)
+    const noInteractions = _.isEmpty(interactionList.blockedBy) && _.isEmpty(interactionList.blocking)
 
     if (noInteractions) {
       return (
         <View style={styles.container}>
           <Card
-            cardImage={require('../../../assets/images/TrafficConeDark.png')}
+            cardImage={require('../../../assets/images/Car.png')}
             mainText={dictionary.noInteractions.mainText}
             secondaryText={dictionary.noInteractions.secondaryText}
           />
@@ -28,7 +28,7 @@ const LandingPageCardList = function ({ allUsers, interactionList }) {
       )
     } else {
       return (
-        <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+        <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false} onScroll={onScroll} scrollEventThrottle={16}>
           { getList(interactionList.blocking, `You're Blocking`) }
           { getList(interactionList.blockedBy, `You're Blocked By`) }
         </ScrollView>
@@ -93,7 +93,9 @@ LandingPageCardList.propTypes = {
     blocking: PropTypes.arrayOf(
       PropTypes.string.isRequired,
     ).isRequired
-  })
+  }),
+
+  onScroll: PropTypes.func.isRequired
 }
 
 export default LandingPageCardList

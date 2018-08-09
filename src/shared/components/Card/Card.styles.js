@@ -26,7 +26,7 @@ export default StyleSheet.create({
     marginRight: getWidthPercentage(15),
     height: getHeightPercentage(35),
     width: getHeightPercentage(35),
-    resizeMode: 'cover'
+    resizeMode: 'contain'
   },
   
   cardDetails: {

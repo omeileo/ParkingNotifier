@@ -15,12 +15,11 @@ export default StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
     position: 'absolute',
-    top: '34%'
+    top: '41%'
   },
 
   headerImage: {
     width: '100%',
-    height: getHeightPercentage(299),
     resizeMode: 'cover'
   }
 })
