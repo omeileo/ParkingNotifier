@@ -14,25 +14,41 @@ import styles from './LandingPage.styles'
 import * as BackendMock from '../../__networkRequests__/__mocks__/BackendMock'
 import { getHeightPercentage } from '../../shared/utilityFunctions'
 
+const HEADER_MAX_HEIGHT = getHeightPercentage(350)
+const HEADER_MIN_HEIGHT = getHeightPercentage(175)
+const SEARCH_AREA_HEIGHT = getHeightPercentage(145)
+const SEARCH_AREA_MAX_TOP = HEADER_MAX_HEIGHT - (SEARCH_AREA_HEIGHT / 2)
+const SEARCH_AREA_MIN_TOP = getHeightPercentage(100)
+
 export default class LandingPage extends Component {
   constructor () {
     super()
-    this.AnimatedHeaderValue = new Animated.Value(0)
+    this.state = { animatedHeaderValue: new Animated.Value(0) }
   }
 
   render () {
     let blockedByLength, blockingLength
-    let headerMaximumHeight = (350)
-    let headerMinimumHeight = (175)
 
-    const AnimatedHeaderHeight = this.AnimatedHeaderValue.interpolate({
-      inputRange: [0, (headerMaximumHeight - headerMinimumHeight)],
-      outputRange: [headerMaximumHeight, headerMinimumHeight],
+    const animatedHeaderHeight = this.state.animatedHeaderValue.interpolate({
+      inputRange: [0, (HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT)],
+      outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
+      extrapolate: 'clamp'
+    })
+
+    const animatedHeaderZindex = this.state.animatedHeaderValue.interpolate({
+      inputRange: [0, (HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT)],
+      outputRange: [0, 1],
+      extrapolate: 'clamp'
+    })
+
+    const animatedSearchPosition = this.state.animatedHeaderValue.interpolate({
+      inputRange: [0, (HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT)],
+      outputRange: [SEARCH_AREA_MAX_TOP, SEARCH_AREA_MIN_TOP],
       extrapolate: 'clamp'
     })
 
     const onScroll = () => {
-      return Animated.event([{ nativeEvent: {contentOffset: { y: this.AnimatedHeaderValue }} }])
+      return Animated.event([{ nativeEvent: {contentOffset: { y: this.state.animatedHeaderValue }} }])
     }
 
     if (_.isUndefined(BackendMock.interactionList)) {
@@ -45,9 +61,9 @@ export default class LandingPage extends Component {
 
     return (
       <View style={styles.container}>
-        <Animated.Image style={[styles.headerImage, {height: AnimatedHeaderHeight}]} source={require('../../assets/images/HeaderImage.png')} />
+        <Animated.Image style={[styles.headerImage, {height: animatedHeaderHeight, zIndex: animatedHeaderZindex}]} source={require('../../assets/images/HeaderImage.png')} />
+        <Animated.View style={[styles.searchArea, {top: animatedSearchPosition, zIndex: animatedHeaderZindex}]}><SearchArea blockedBy={blockedByLength} blocking={blockingLength} /></Animated.View>
         <LandingPageCardList allUsers={BackendMock.allUsers} interactionList={BackendMock.interactionList} onScroll={onScroll()} />
-        <View style={[styles.header]}><SearchArea blockedBy={blockedByLength} blocking={blockingLength} /></View>
       </View>
     )
   }

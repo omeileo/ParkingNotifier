@@ -4,22 +4,28 @@
 import { StyleSheet } from 'react-native'
 
 // Internal Dependencies
-import { getHeightPercentage } from '../../shared/utilityFunctions'
+import { getWidthPercentage } from '../../shared/utilityFunctions'
 
 export default StyleSheet.create({
   container: {
     flex: 1
   },
-
-  header: {
-    width: '100%',
-    alignSelf: 'center',
-    position: 'absolute',
-    top: '41%'
-  },
-
+  
   headerImage: {
     width: '100%',
-    resizeMode: 'cover'
+    resizeMode: 'cover',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0
+  },
+
+  searchArea: {
+    position: 'absolute',
+    alignSelf: 'center',
+    position: 'absolute',
+    marginHorizontal: getWidthPercentage(15),
+    left: 0,
+    right: 0
   }
 })

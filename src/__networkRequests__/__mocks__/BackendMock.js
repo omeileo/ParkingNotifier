@@ -24,9 +24,12 @@ export const allUsers = [
 export const interactionList = {
   blockedBy: [
     '8722 HT', 
-    '7611 HD'
+    '7611 HD',
+    '3551 FA',
+    '6690 DF',
   ],
   blocking: [
-    '7681 BH'
+    '7681 BH',
+    '8167 HB',
   ]
 }

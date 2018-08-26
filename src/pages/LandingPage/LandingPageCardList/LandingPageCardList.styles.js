@@ -11,7 +11,7 @@ import { getHeightPercentage, getWidthPercentage } from '../../../shared/utility
 
 export default StyleSheet.create({
   container: {
-    paddingTop: getHeightPercentage(110),
+    paddingTop: getHeightPercentage(460),
     paddingHorizontal: getWidthPercentage(15)
   },
 
