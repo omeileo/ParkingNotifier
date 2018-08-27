@@ -26,6 +26,7 @@ export default StyleSheet.create({
     position: 'absolute',
     marginHorizontal: getWidthPercentage(15),
     left: 0,
-    right: 0
+    right: 0,
+    zIndex: 1
   }
 })

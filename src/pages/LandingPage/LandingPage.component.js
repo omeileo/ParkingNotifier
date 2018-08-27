@@ -23,7 +23,11 @@ const SEARCH_AREA_MIN_TOP = getHeightPercentage(100)
 export default class LandingPage extends Component {
   constructor () {
     super()
-    this.state = { animatedHeaderValue: new Animated.Value(0) }
+
+    this.state = {
+      animatedHeaderValue: new Animated.Value(0),
+      searchText: ''
+    }
   }
 
   render () {
@@ -51,6 +55,10 @@ export default class LandingPage extends Component {
       return Animated.event([{ nativeEvent: {contentOffset: { y: this.state.animatedHeaderValue }} }])
     }
 
+    const onChangeText = (text) => {
+      this.setState({ searchText: text })
+    }
+
     if (_.isUndefined(BackendMock.interactionList)) {
       blockedByLength = 0
       blockingLength = 0
@@ -62,7 +70,9 @@ export default class LandingPage extends Component {
     return (
       <View style={styles.container}>
         <Animated.Image style={[styles.headerImage, {height: animatedHeaderHeight, zIndex: animatedHeaderZindex}]} source={require('../../assets/images/HeaderImage.png')} />
-        <Animated.View style={[styles.searchArea, {top: animatedSearchPosition, zIndex: animatedHeaderZindex}]}><SearchArea blockedBy={blockedByLength} blocking={blockingLength} /></Animated.View>
+        <Animated.View style={[styles.searchArea, {top: animatedSearchPosition}]}>
+          <SearchArea blockedBy={blockedByLength} blocking={blockingLength} onChangeText={onChangeText} searchText={this.state.searchText} />
+        </Animated.View>
         <LandingPageCardList allUsers={BackendMock.allUsers} interactionList={BackendMock.interactionList} onScroll={onScroll()} />
       </View>
     )

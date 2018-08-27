@@ -1,16 +1,17 @@
 'use strict'
 
 // External Dependencies
-import React, { Component } from 'react'
-import { Image, Text, View } from 'react-native'
+import React from 'react'
+import { Image, Text, TextInput, View } from 'react-native'
 
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
-// Internal Components
+// Internal Dependencies
+import colors from '../../../shared/styles/colorPalette.styles'
 import styles from './SearchArea.styles'
 
-const SearchArea = function ({blockedBy, blocking}) {
+const SearchArea = function ({blockedBy, blocking, onChangeText, searchText}) {
   const getTitle = function getSearchAreaTitle () {
     const isBlockedBy = _.isFinite(blockedBy) && blockedBy !== 0
     const isBlocking = _.isFinite(blocking) && blocking !== 0
@@ -41,7 +42,23 @@ const SearchArea = function ({blockedBy, blocking}) {
       <View style={styles.seperator}/>
 
       <View style={styles.search}>
-        <View style={styles.searchField}></View>
+        <View style={styles.searchField}>
+          <TextInput
+            onChangeText={(text) => onChangeText(text)}
+            underlineColorAndroid='transparent'
+            value={searchText}
+            placeholder={'Search License Plate #'}
+            placeholderTextColor={colors.grey.B2E6FA}
+            style={styles.inputText}
+            maxLength={7}
+            autoCorrect={false}
+            autoCapitalize={'characters'}
+            clearButtonMode={_.isEmpty(searchText) ? 'never' : 'always'}
+            enablesReturnKeyAutomatically
+            returnKeyType={'done'}
+          />
+        </View>
+
         <View style={styles.searchIcon}>
           <Image style={styles.searchIconImage} source={require('../../../assets/images/Search.png')} resizeMode={'contain'}/>
         </View>
@@ -52,7 +69,9 @@ const SearchArea = function ({blockedBy, blocking}) {
 
 SearchArea.propTypes = {
   blockedBy: PropTypes.number.isRequired,
-  blocking: PropTypes.number.isRequired
+  blocking: PropTypes.number.isRequired,
+  onChangeText: PropTypes.func.isRequired,
+  searchText: PropTypes.string.isRequired
 }
 
 export default SearchArea

@@ -39,6 +39,13 @@ export default StyleSheet.create({
     justifyContent: 'center'
   },
 
+  inputText: {
+    ...DefaultStyles.font.size.h3,
+    color: colors.white,
+    flex: 1,
+    fontWeight: 'bold'
+  },
+
   verticalSeparator: {
     width: 1.2,
     height: '95%',
@@ -65,7 +72,9 @@ export default StyleSheet.create({
     height: 50,
     width: '80%',
     borderRadius: 25,
-    backgroundColor: colors.blue
+    backgroundColor: colors.blue,
+    paddingLeft: getWidthPercentage(20),
+    paddingRight: getWidthPercentage(10)
   },
 
   placeholderText: {},

@@ -5,6 +5,7 @@ export default {
   white: '#ffffff',
   transparent: 'transparent',
   grey: {
+    B2E6FA: '#B2E6FA',
     E7E8E9: '#E7E8E9',
     F7F7F7: '#F7F7F7'
   },
