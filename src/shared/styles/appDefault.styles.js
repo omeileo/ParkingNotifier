@@ -1,36 +1,49 @@
+// External Dependencies
+import { Platform } from 'react-native'
+
 // Internal Dependencies
 import colors from './colorPalette.styles'
+import {getHeightPercentage, getWidthPercentage} from '../utilityFunctions'
 
 export const card = {
   container: {
     width: '100%',
     backgroundColor: colors.white,
-    padding: 15,
+    paddingHorizontal: getWidthPercentage(15),
+    paddingVertical: getHeightPercentage(15),
     borderRadius: 5,
   },
 
   shadow: {
-    // Android Shadow
-    elevation: 10,
+    ...Platform.select({
+      ios: {
+        shadowOffset: { width: 0, height: 5 },
+        shadowColor: colors.black,
+        shadowOpacity: 0.5,
+        shadowRadius: 7
+      },
 
-    // iOS Shadow
-    shadowOffset: { width: 0, height: 5 },
-    shadowColor: colors.black,
-    shadowOpacity: 0.5,
-    shadowRadius: 15
+      android: {
+        elevation: getHeightPercentage(6)
+      }
+    })
   }
 }
 
 export const icon = {
   shadow: {
-    // Android Shadow
-    elevation: 10,
+    ...Platform.select({
+      ios: {
+        shadowOffset: { width: 0, height: 5 },
+        shadowColor: colors.black,
+        shadowOpacity: 0.5,
+        shadowRadius: 6
+      },
 
-    // iOS Shadow
-    shadowOffset: { width: 0, height: 5 },
-    shadowColor: colors.black,
-    shadowOpacity: 0.5,
-    shadowRadius: 6
+      android: {
+        elevation: getHeightPercentage(6)
+      }
+    })
   },
 
   size: {

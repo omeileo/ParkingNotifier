@@ -2,7 +2,7 @@
 
 // External Dependencies
 import React, { Component } from 'react'
-import { Animated, View } from 'react-native'
+import { Animated, Easing, View } from 'react-native'
 
 import _ from 'lodash'
 
@@ -59,6 +59,22 @@ export default class LandingPage extends Component {
       this.setState({ searchText: text })
     }
 
+    const onSearchAreaEntry = () => {
+      // this.state.animatedHeaderValue.setValue(0)
+
+      // return Animated.timing(
+      //   this.state.animatedHeaderValue,
+      //   {
+      //     toValue: HEADER_MIN_HEIGHT,
+      //     duration: 250,
+      //     easing: Easing.linear
+      //   }
+      // ).start()
+    }
+
+    const onSearchAreaExit = () => {
+    }
+
     if (_.isUndefined(BackendMock.interactionList)) {
       blockedByLength = 0
       blockingLength = 0
@@ -71,7 +87,9 @@ export default class LandingPage extends Component {
       <View style={styles.container}>
         <Animated.Image style={[styles.headerImage, {height: animatedHeaderHeight, zIndex: animatedHeaderZindex}]} source={require('../../assets/images/HeaderImage.png')} />
         <Animated.View style={[styles.searchArea, {top: animatedSearchPosition}]}>
-          <SearchArea blockedBy={blockedByLength} blocking={blockingLength} onChangeText={onChangeText} searchText={this.state.searchText} />
+          <SearchArea blockedBy={blockedByLength} blocking={blockingLength} onChangeText={onChangeText} searchText={this.state.searchText}
+            onSearchAreaEntry={onSearchAreaEntry} onSearchAreaExit={onSearchAreaExit}
+          />
         </Animated.View>
         <LandingPageCardList allUsers={BackendMock.allUsers} interactionList={BackendMock.interactionList} onScroll={onScroll()} />
       </View>

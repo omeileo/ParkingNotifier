@@ -11,7 +11,7 @@ import _ from 'lodash'
 import colors from '../../../shared/styles/colorPalette.styles'
 import styles from './SearchArea.styles'
 
-const SearchArea = function ({blockedBy, blocking, onChangeText, searchText}) {
+const SearchArea = function ({blockedBy, blocking, onChangeText, onSearchAreaEntry, onSearchAreaExit, searchText}) {
   const getTitle = function getSearchAreaTitle () {
     const isBlockedBy = _.isFinite(blockedBy) && blockedBy !== 0
     const isBlocking = _.isFinite(blocking) && blocking !== 0
@@ -45,6 +45,8 @@ const SearchArea = function ({blockedBy, blocking, onChangeText, searchText}) {
         <View style={styles.searchField}>
           <TextInput
             onChangeText={(text) => onChangeText(text)}
+            onFocus={() => onSearchAreaEntry()}
+            onBlur={() => onSearchAreaExit()}
             underlineColorAndroid='transparent'
             value={searchText}
             placeholder={'Search License Plate #'}
@@ -71,6 +73,8 @@ SearchArea.propTypes = {
   blockedBy: PropTypes.number.isRequired,
   blocking: PropTypes.number.isRequired,
   onChangeText: PropTypes.func.isRequired,
+  onSearchAreaEntry: PropTypes.func.isRequired,
+  onSearchAreaExit: PropTypes.func.isRequired,
   searchText: PropTypes.string.isRequired
 }
 

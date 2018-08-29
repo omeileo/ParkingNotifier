@@ -7,6 +7,7 @@ export default {
   grey: {
     B2E6FA: '#B2E6FA',
     E7E8E9: '#E7E8E9',
+    F5F5F5: '#F5F5F5',
     F7F7F7: '#F7F7F7'
   },
 
