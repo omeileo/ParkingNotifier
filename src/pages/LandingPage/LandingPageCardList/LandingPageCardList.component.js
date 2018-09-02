@@ -43,10 +43,19 @@ const LandingPageCardList = function ({ allUsers, interactionList, onScroll }) {
           <Text style={styles.listHeader}>{beforeText} {list.length} Vehicle{list.length > 1 ? 's' : ''}:</Text>
           {
             list.map((licencePlateNumber, index) => {
+              const user = allUsers.find(user => user.licencePlateNumber === licencePlateNumber)
+              const {color, make, model, year} = user.carDetails
+              let carDetails = [color, year, make, model]
+
+              _.pull(carDetails, '')
+              carDetails = _.join(carDetails, ' ')
+
               return (
                 <Card
                   cardImage={require('../../../assets/images/TrafficConeDark.png')}
-                  mainText={licencePlateNumber}
+                  mainText={user.licencePlateNumber}
+                  secondaryText={carDetails}
+                  contactInfo={user.contact}
                   key={index}
                 />  
               )
@@ -55,6 +64,16 @@ const LandingPageCardList = function ({ allUsers, interactionList, onScroll }) {
         </View>
       )
     }
+  }
+
+  const getDetailedList = function (list) {
+    let detailedList = []
+
+    list.map((licencePlateNumber, index) => {
+      detailedList.push(_.find(allUsers, { 'licencePlateNumber': licencePlateNumber }))
+    })
+
+    return detailedList
   }
 
   return getInteractionList()
@@ -67,7 +86,7 @@ LandingPageCardList.propTypes = {
 
       contact: PropTypes.shape({
         mobileNumber: PropTypes.string,
-        extension: PropTypes.number,
+        extension: PropTypes.string,
         emailAddress: PropTypes.string
       }).isRequired,
 

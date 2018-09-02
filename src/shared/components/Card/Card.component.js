@@ -2,7 +2,7 @@
 
 // External Dependencies
 import React, { Component } from 'react'
-import { Image, Text, TouchableHighlight, View } from 'react-native'
+import { Image, Linking, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native'
 
 import PropTypes from 'prop-types'
 import _ from 'lodash'
@@ -17,7 +17,7 @@ export default class LandingPage extends Component {
     mainText: PropTypes.string.isRequired,
     secondaryText: PropTypes.string,
     contactInfo: PropTypes.shape({
-      extension: PropTypes.number,
+      extension: PropTypes.string,
       mobileNumber: PropTypes.string,
       email: PropTypes.string
     }),
@@ -29,18 +29,42 @@ export default class LandingPage extends Component {
 
   getCardDetails = function getCardDetails () {
     const { contactInfo, mainText, secondaryText } = this.props
-    
+
     return (
       <View style={styles.cardDetails}>
         <Text style={styles.mainText}>{mainText}</Text>
-        { secondaryText && <Text style={styles.secondaryText}>{secondaryText}</Text> }
-        { contactInfo &&
-          <View style={styles.contactInfo}>
-            { contactInfo.extension && <Text style={styles.otherText}>{contactInfo.extension}</Text> }
-            { contactInfo.mobileNumber && <Image style={styles.contactIcon} source={require('../../../assets/images/Call.png')}/> }
-            { contactInfo.email && <Image style={styles.contactIcon} source={require('../../../assets/images/Chat.png')}/> }
-          </View>
-        }
+
+        { !_.isEmpty(secondaryText) && <Text style={styles.secondaryText}>{secondaryText}</Text> }
+
+        <View style={styles.contactInfo}>
+          <Text style={styles.otherText}>
+            { !_.isEmpty(contactInfo.extension) ? `Ext: ${contactInfo.extension}` : 'Contact:' }
+          </Text>
+
+          {
+            !_.isEmpty(contactInfo.extension) && !_.isEmpty(contactInfo.mobileNumber)
+            && <Text style={styles.otherText}>| </Text>
+          }
+          
+          {
+            !_.isEmpty(contactInfo.mobileNumber) &&
+            <TouchableOpacity onPress={() => Linking.openURL(`tel:${contactInfo.mobileNumber}`)} activeOpacity={0.6}>
+              <Image style={styles.contactIcon} source={require('../../../assets/images/Call.png')}/>
+            </TouchableOpacity>
+          }
+
+          {
+            (!_.isEmpty(contactInfo.extension) || !_.isEmpty(contactInfo.mobileNumber)) && !_.isEmpty(contactInfo.emailAddress)
+            && <Text style={styles.otherText}>| </Text>
+          }
+          
+          {
+            !_.isEmpty(contactInfo.emailAddress) &&
+            <TouchableOpacity onPress={() => Linking.openURL(`mailto:${contactInfo.emailAddress}?subject=I am blocking you&body=body`)} activeOpacity={0.6}>
+              <Image style={styles.contactIcon} source={require('../../../assets/images/Chat.png')}/>
+            </TouchableOpacity>
+          }
+        </View>
       </View>
     )
   }

@@ -42,14 +42,24 @@ export default StyleSheet.create({
     color: colors.black
   },
 
-  contactInfo: {},
+  contactInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 3
+  },
 
   otherText: {
     ...DefaultStyles.font.size.h4,
-    color: colors.blue
+    color: colors.blue,
+    marginRight: getWidthPercentage(10)
   },
 
-  contactIcon: {},
+  contactIcon: {
+    marginRight: getWidthPercentage(10),
+    height: getHeightPercentage(13),
+    width: getHeightPercentage(13),
+    resizeMode: 'contain'
+  },
 
   actionIcon: {},
 
