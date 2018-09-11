@@ -90,7 +90,7 @@ export default StyleSheet.create({
   },
 
   searchIconImage: {
-    ...DefaultStyles.icon.size.large,
+    ...DefaultStyles.icon.size.medium,
     flex: 1,
     alignSelf: 'center',
   }

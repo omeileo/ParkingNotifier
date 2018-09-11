@@ -9,7 +9,10 @@ import _ from 'lodash'
 
 // Internal Components
 import Card from '../../../shared/components/Card/Card.component'
+
 import dictionary from './LandingPageCardList.dictionary'
+import globalDictionary from '../../../shared/dictionaries/global.dictionary'
+import images from '../../../shared/dictionaries/images.dictionary'
 import styles from './LandingPageCardList.styles'
 
 const LandingPageCardList = function ({ allUsers, interactionList, onScroll }) {
@@ -20,7 +23,7 @@ const LandingPageCardList = function ({ allUsers, interactionList, onScroll }) {
       return (
         <View style={styles.container}>
           <Card
-            cardImage={require('../../../assets/images/Car.png')}
+            cardImage={images.happyCar}
             mainText={dictionary.noInteractions.mainText}
             secondaryText={dictionary.noInteractions.secondaryText}
           />
@@ -29,33 +32,37 @@ const LandingPageCardList = function ({ allUsers, interactionList, onScroll }) {
     } else {
       return (
         <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false} onScroll={onScroll} scrollEventThrottle={16}>
-          { getList(interactionList.blocking, `You're Blocking`) }
-          { getList(interactionList.blockedBy, `You're Blocked By`) }
+          { getList(interactionList.blocking, globalDictionary.interactionStatus.blocking) }
+          { getList(interactionList.blockedBy, globalDictionary.interactionStatus.blocked) }
         </ScrollView>
       )
     }
   }
 
-  const getList = function (list, beforeText) {
+  const getList = function (list, status) {
     if (!_.isEmpty(list)) {
       return (
         <View style={styles.list}>
-          <Text style={styles.listHeader}>{beforeText} {list.length} Vehicle{list.length > 1 ? 's' : ''}:</Text>
+          { !_.isEmpty(status) && <Text style={styles.listHeader}>{status} {list.length} Vehicle{list.length > 1 ? 's' : ''}:</Text>}
+
           {
             list.map((licencePlateNumber, index) => {
               const user = allUsers.find(user => user.licencePlateNumber === licencePlateNumber)
-              const {color, make, model, year} = user.carDetails
-              let carDetails = [color, year, make, model]
+              const { color, make, model, year } = user.carDetails
+              const carLogo = images.hasOwnProperty(_.lowerCase(make)) ? images[_.lowerCase(make)] : images.trafficConeDark
+              let carDetails = [ color, year, make, model ]
 
               _.pull(carDetails, '')
               carDetails = _.join(carDetails, ' ')
 
               return (
                 <Card
-                  cardImage={require('../../../assets/images/TrafficConeDark.png')}
+                  cardImage={carLogo}
                   mainText={user.licencePlateNumber}
                   secondaryText={carDetails}
                   contactInfo={user.contact}
+                  cardActions={getCardActions(status)}
+                  cardType={status}
                   key={index}
                 />  
               )
@@ -66,14 +73,27 @@ const LandingPageCardList = function ({ allUsers, interactionList, onScroll }) {
     }
   }
 
-  const getDetailedList = function (list) {
-    let detailedList = []
+  const getCardActions = function (status) {
+    let cardActions = []
 
-    list.map((licencePlateNumber, index) => {
-      detailedList.push(_.find(allUsers, { 'licencePlateNumber': licencePlateNumber }))
-    })
+    switch (status) {
+      case globalDictionary.interactionStatus.blocked:
+        cardActions.push({ icon: images.notify, text:dictionary.iconText.notify, action: () => {} })
+        break
 
-    return detailedList
+      case globalDictionary.interactionStatus.blocking:
+        cardActions.push({ icon: images.unblock, text:dictionary.iconText.unblock, action: () => {} })
+        break
+
+      case globalDictionary.interactionStatus.none:
+        cardActions.push(
+          { icon: images.blocking, text:dictionary.iconText.blocking, action: () => {} },
+          { icon: images.blocked, text:dictionary.iconText.blocked, action: () => {} }
+        )
+        break
+    }
+
+    return cardActions
   }
 
   return getInteractionList()

@@ -5,13 +5,17 @@ import { Platform } from 'react-native'
 import colors from './colorPalette.styles'
 import {getHeightPercentage, getWidthPercentage} from '../utilityFunctions'
 
+//Constants
+export const BORDER_RADIUS = 5
+
+// Card
 export const card = {
   container: {
     width: '100%',
     backgroundColor: colors.white,
     paddingHorizontal: getWidthPercentage(15),
     paddingVertical: getHeightPercentage(15),
-    borderRadius: 5,
+    borderRadius: BORDER_RADIUS,
   },
 
   shadow: {
@@ -28,6 +32,11 @@ export const card = {
       }
     })
   }
+}
+
+// Icon
+const iconResizeMode = {
+  resizeMode: 'cover'
 }
 
 export const icon = {
@@ -48,12 +57,26 @@ export const icon = {
 
   size: {
     large: {
-      height: 23,
-      width: 23
+      ...iconResizeMode,
+      height: getHeightPercentage(35),
+      width: getHeightPercentage(35)
+    },
+
+    medium: {
+      ...iconResizeMode,
+      height: getHeightPercentage(23),
+      width: getHeightPercentage(23)
+    },
+
+    small: {
+      ...iconResizeMode,
+      height: getHeightPercentage(13),
+      width: getHeightPercentage(13)
     }
   }
 }
 
+// Font
 export const font = {
   size: {
     h1: { fontSize: 22 },

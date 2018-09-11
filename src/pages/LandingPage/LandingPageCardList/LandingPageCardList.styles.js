@@ -20,7 +20,7 @@ export default StyleSheet.create({
   },
 
   listHeader: {
-    ...font.size.h4,
+    ...font.size.h3,
     color: colors.black,
     alignSelf: 'center',
     paddingBottom: getHeightPercentage(15)

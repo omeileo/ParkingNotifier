@@ -2,17 +2,19 @@
 
 // External Dependencies
 import React, { Component } from 'react'
-import { Image, Linking, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native'
+import { Image, Linking, Text, TouchableOpacity, View } from 'react-native'
 
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
 // Internal Components
-import colors from '../../../shared/styles/colorPalette.styles'
+import globalDictionary from '../../dictionaries/global.dictionary'
+import images from '../../dictionaries/images.dictionary';
 import styles from './Card.styles'
 
-export default class LandingPage extends Component {
+export default class Card extends Component {
   static propTypes = {
+    cardType: PropTypes.string.isRequired,
     cardImage: PropTypes.any.isRequired,
     mainText: PropTypes.string.isRequired,
     secondaryText: PropTypes.string,
@@ -22,47 +24,62 @@ export default class LandingPage extends Component {
       email: PropTypes.string
     }),
     cardActions: PropTypes.arrayOf(PropTypes.shape({
+      action: PropTypes.func.isRequired,
       icon: PropTypes.any.isRequired,
-      action: PropTypes.func.isRequired
+      text: PropTypes.text
     }))
   }
 
-  getCardDetails = function getCardDetails () {
-    const { contactInfo, mainText, secondaryText } = this.props
+  getCardDetails = function () {
+    const { cardType, contactInfo: { mobileNumber, extension, emailAddress }, mainText, secondaryText } = this.props
+    const contactObjects = [ { data: !_.isEmpty(extension) ? `Ext: ${extension}` : 'Contact:  ', onPress: () => {}, isText: true } ]
+    let subject = ''
+    let body = ''
+
+    switch (cardType) {
+      case globalDictionary.interactionStatus.blocked:
+        subject = `Urgent: Please unblock ${mainText} ASAP.`
+        body = `The ${_.isEmpty(secondaryText) ? 'person' : secondaryText} (${mainText}) you are blocking would like to leave now.\n\nSent from The Parking Lot Notifier`
+        break
+
+      case globalDictionary.interactionStatus.blocking:
+        subject = `Update: ${mainText} is no longer blocking you.`
+        body = `Just wanted you to know that you are no longer being blocked by the ${secondaryText}.\n\nSent from The Parking Lot Notifier`
+        break
+
+      case globalDictionary.interactionStatus.none:
+        subject = ``
+        body = ``
+        break
+    }
+
+    if (!_.isEmpty(mobileNumber)) contactObjects.push({ data: images.call, onPress: () => Linking.openURL(`tel:${mobileNumber}`) })
+    if (!_.isEmpty(mobileNumber)) contactObjects.push({ data: images.chat, onPress: () => Linking.openURL(`sms:${mobileNumber}&body=${body}`) })
+    if (!_.isEmpty(emailAddress)) contactObjects.push({ data: images.email, onPress: () => Linking.openURL(`mailto:${emailAddress}?subject=${subject}&body=${body}`) })
 
     return (
-      <View style={styles.cardDetails}>
+      <View>
         <Text style={styles.mainText}>{mainText}</Text>
 
         { !_.isEmpty(secondaryText) && <Text style={styles.secondaryText}>{secondaryText}</Text> }
 
         <View style={styles.contactInfo}>
-          <Text style={styles.otherText}>
-            { !_.isEmpty(contactInfo.extension) ? `Ext: ${contactInfo.extension}` : 'Contact:' }
-          </Text>
+          {
+            contactObjects.map((contact, index) => {
+              return (
+                <View style={styles.contactIconAndSeparator} key={index}>
+                  <TouchableOpacity onPress={contact.onPress} activeOpacity={0.6} hitSlop={{top: 10, bottom: 10, left: 5, right: 5}}>
+                    {
+                      contact.isText
+                        ? <Text style={styles.otherText}>{ contact.data }</Text>
+                        : <Image style={styles.contactIcon} source={contact.data}/>
+                    }
+                  </TouchableOpacity>
 
-          {
-            !_.isEmpty(contactInfo.extension) && !_.isEmpty(contactInfo.mobileNumber)
-            && <Text style={styles.otherText}>| </Text>
-          }
-          
-          {
-            !_.isEmpty(contactInfo.mobileNumber) &&
-            <TouchableOpacity onPress={() => Linking.openURL(`tel:${contactInfo.mobileNumber}`)} activeOpacity={0.6}>
-              <Image style={styles.contactIcon} source={require('../../../assets/images/Call.png')}/>
-            </TouchableOpacity>
-          }
-
-          {
-            (!_.isEmpty(contactInfo.extension) || !_.isEmpty(contactInfo.mobileNumber)) && !_.isEmpty(contactInfo.emailAddress)
-            && <Text style={styles.otherText}>| </Text>
-          }
-          
-          {
-            !_.isEmpty(contactInfo.emailAddress) &&
-            <TouchableOpacity onPress={() => Linking.openURL(`mailto:${contactInfo.emailAddress}?subject=I am blocking you&body=body`)} activeOpacity={0.6}>
-              <Image style={styles.contactIcon} source={require('../../../assets/images/Chat.png')}/>
-            </TouchableOpacity>
+                  { ((index + 1) < contactObjects.length ) && contact.data !== 'Contact:  ' && <Text style={styles.contactIconSeparator}>|</Text>}
+                </View>
+              )
+            })
           }
         </View>
       </View>
@@ -74,11 +91,16 @@ export default class LandingPage extends Component {
 
     return (
       <View style={styles.actionButtonArea}>
-        {_.map(cardActions,
-          <TouchableHighlight style={styles.actionButton} onPress={() => cardActions.action()} activeOpacity={0.6} underlayColor={colors.grey.F7F7F7}>
-            <Image style={styles.actionIcon} source={cardActions.icon}/>
-          </TouchableHighlight>
-        )}
+        {
+          cardActions.map((cardAction, index) => {
+            return (
+              <TouchableOpacity style={styles.actionButton} onPress={() => cardAction.action()} activeOpacity={0.6} key={index}>
+                <Image style={styles.actionIcon} source={cardAction.icon}/>
+                <Text style={styles.actionText}>{ _.toUpper(cardAction.text)}</Text>
+              </TouchableOpacity>
+            )
+          })
+        }
       </View>
     )
   }
@@ -93,7 +115,7 @@ export default class LandingPage extends Component {
           { this.getCardDetails() }
         </View>
 
-        { cardActions && this.getActionArea() }
+        { !_.isUndefined(cardActions) && this.getActionArea() }
       </View>
     )
   }

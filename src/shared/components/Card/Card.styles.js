@@ -13,7 +13,10 @@ export default StyleSheet.create({
     ...DefaultStyles.card.container,
     ...DefaultStyles.card.shadow,
     flexDirection: 'row',
+    justifyContent: 'space-between',
     height: getHeightPercentage(85),
+    paddingVertical: 0,
+    paddingRight: 0,
     marginBottom: getHeightPercentage(15)
   },
 
@@ -27,9 +30,6 @@ export default StyleSheet.create({
     height: getHeightPercentage(35),
     width: getHeightPercentage(35),
     resizeMode: 'contain'
-  },
-  
-  cardDetails: {
   },
 
   mainText: {
@@ -45,25 +45,55 @@ export default StyleSheet.create({
   contactInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 3
+    paddingTop: getHeightPercentage(3)
   },
 
   otherText: {
     ...DefaultStyles.font.size.h4,
-    color: colors.blue,
-    marginRight: getWidthPercentage(10)
+    color: colors.blue
+  },
+
+  contactIconAndSeparator: {
+    flexDirection: 'row',
+    alignItems: 'center'
   },
 
   contactIcon: {
-    marginRight: getWidthPercentage(10),
-    height: getHeightPercentage(13),
-    width: getHeightPercentage(13),
-    resizeMode: 'contain'
+    ...DefaultStyles.icon.size.small
   },
 
-  actionIcon: {},
+  contactIconSeparator: {
+    ...DefaultStyles.font.size.h4,
+    color: colors.blue,
+    marginHorizontal: getWidthPercentage(7)
+  },
 
-  actionButton: {},
+  actionButtonArea: {
+    height: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+  },
+
+  actionButton: {
+    height: '100%',
+    width: getWidthPercentage(55),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.grey.F7F7F7,
+    borderBottomRightRadius: DefaultStyles.BORDER_RADIUS,
+    borderTopRightRadius: DefaultStyles.BORDER_RADIUS,
+  },
+
+  actionIcon: {
+    ...DefaultStyles.icon.size.large
+  },
+
+  actionText: {
+    fontSize: 7,
+    color: colors.black,
+    paddingTop: 2
+  },
 
   actionButtonSeparator: {}
 })
