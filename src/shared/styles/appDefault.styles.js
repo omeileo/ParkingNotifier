@@ -36,7 +36,7 @@ export const card = {
 
 // Icon
 const iconResizeMode = {
-  resizeMode: 'cover'
+  resizeMode: 'contain'
 }
 
 export const icon = {

@@ -92,6 +92,6 @@ export default StyleSheet.create({
   searchIconImage: {
     ...DefaultStyles.icon.size.medium,
     flex: 1,
-    alignSelf: 'center',
+    alignSelf: 'center'
   }
 })

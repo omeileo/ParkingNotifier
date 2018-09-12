@@ -15,42 +15,21 @@ import globalDictionary from '../../../shared/dictionaries/global.dictionary'
 import images from '../../../shared/dictionaries/images.dictionary'
 import styles from './LandingPageCardList.styles'
 
-const LandingPageCardList = function ({ allUsers, interactionList, onScroll }) {
-  const getInteractionList = function dynamicallyGenerateVerboseInteractionList () {
-    const noInteractions = _.isEmpty(interactionList.blockedBy) && _.isEmpty(interactionList.blocking)
-
-    if (noInteractions) {
-      return (
-        <View style={styles.container}>
-          <Card
-            cardImage={images.happyCar}
-            mainText={dictionary.noInteractions.mainText}
-            secondaryText={dictionary.noInteractions.secondaryText}
-          />
-        </View>
-      )
-    } else {
-      return (
-        <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false} onScroll={onScroll} scrollEventThrottle={16}>
-          { getList(interactionList.blocking, globalDictionary.interactionStatus.blocking) }
-          { getList(interactionList.blockedBy, globalDictionary.interactionStatus.blocked) }
-        </ScrollView>
-      )
-    }
-  }
+const LandingPageCardList = function ({ allUsers, interactionList, onScroll, searchText }) {
 
   const getList = function (list, status) {
+    const isFilteredList = status === globalDictionary.interactionStatus.none
+
     if (!_.isEmpty(list)) {
       return (
-        <View style={styles.list}>
-          { !_.isEmpty(status) && <Text style={styles.listHeader}>{status} {list.length} Vehicle{list.length > 1 ? 's' : ''}:</Text>}
+        <View style={!isFilteredList && styles.list}>
+          { !isFilteredList && <Text style={styles.listHeader}>{status} {list.length} Vehicle{list.length > 1 ? 's' : ''}:</Text>}
 
           {
-            list.map((licencePlateNumber, index) => {
-              const user = allUsers.find(user => user.licencePlateNumber === licencePlateNumber)
-              const { color, make, model, year } = user.carDetails
+            list.map((user, index) => {
+              const { color, make, model } = user.carDetails
               const carLogo = images.hasOwnProperty(_.lowerCase(make)) ? images[_.lowerCase(make)] : images.trafficConeDark
-              let carDetails = [ color, year, make, model ]
+              let carDetails = [ color, make, model ]
 
               _.pull(carDetails, '')
               carDetails = _.join(carDetails, ' ')
@@ -70,7 +49,19 @@ const LandingPageCardList = function ({ allUsers, interactionList, onScroll }) {
           }
         </View>
       )
-    }
+    } else if (isFilteredList) return (
+      <Text style={styles.listHeader}>Licence Plate # Not Found</Text>
+    )
+  }
+
+  const getInteractionList = function dynamicallyGenerateVerboseInteractionList (list) {
+    let interactionListUsers = []
+
+    list.map((licencePlateNumber) => {
+      interactionListUsers.push(allUsers.find(user => user.licencePlateNumber === licencePlateNumber))
+    })
+
+    return interactionListUsers
   }
 
   const getCardActions = function (status) {
@@ -96,7 +87,34 @@ const LandingPageCardList = function ({ allUsers, interactionList, onScroll }) {
     return cardActions
   }
 
-  return getInteractionList()
+  const noInteractions = _.isEmpty(interactionList.blockedBy) && _.isEmpty(interactionList.blocking)
+
+  if (!_.isEmpty(searchText)) {
+    const filteredUsers = allUsers.filter(user => { return user.licencePlateNumber.indexOf(searchText) > -1 })
+
+    return (
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false} onScroll={onScroll} scrollEventThrottle={16}>
+        { getList(filteredUsers, globalDictionary.interactionStatus.none) }
+      </ScrollView>
+    )
+  } else if (noInteractions) {
+    return (
+      <View style={styles.container}>
+        <Card
+          cardImage={images.happyCar}
+          mainText={dictionary.noInteractions.mainText}
+          secondaryText={dictionary.noInteractions.secondaryText}
+        />
+      </View>
+    )
+  } else {
+    return (
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false} onScroll={onScroll} scrollEventThrottle={16}>
+        { getList(getInteractionList(interactionList.blocking), globalDictionary.interactionStatus.blocking) }
+        { getList(getInteractionList(interactionList.blockedBy), globalDictionary.interactionStatus.blocked) }
+      </ScrollView>
+    )
+  }
 }
 
 LandingPageCardList.propTypes = {
@@ -134,7 +152,9 @@ LandingPageCardList.propTypes = {
     ).isRequired
   }),
 
-  onScroll: PropTypes.func.isRequired
+  onScroll: PropTypes.func.isRequired,
+
+  searchText: PropTypes.string
 }
 
 export default LandingPageCardList

@@ -82,7 +82,12 @@ export default StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.grey.F7F7F7,
     borderBottomRightRadius: DefaultStyles.BORDER_RADIUS,
-    borderTopRightRadius: DefaultStyles.BORDER_RADIUS,
+    borderTopRightRadius: DefaultStyles.BORDER_RADIUS
+  },
+
+  actionButtonBorderLeft: {
+    borderLeftColor: colors.grey.E7E8E9,
+    borderLeftWidth: 2
   },
 
   actionIcon: {

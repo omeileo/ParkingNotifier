@@ -2,7 +2,7 @@
 
 // External Dependencies
 import React, { Component } from 'react'
-import { Image, Linking, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, Linking, Text, TouchableOpacity, View } from 'react-native'
 
 import PropTypes from 'prop-types'
 import _ from 'lodash'
@@ -32,7 +32,7 @@ export default class Card extends Component {
 
   getCardDetails = function () {
     const { cardType, contactInfo: { mobileNumber, extension, emailAddress }, mainText, secondaryText } = this.props
-    const contactObjects = [ { data: !_.isEmpty(extension) ? `Ext: ${extension}` : 'Contact:  ', onPress: () => {}, isText: true } ]
+    const contactObjects = []
     let subject = ''
     let body = ''
 
@@ -53,6 +53,9 @@ export default class Card extends Component {
         break
     }
 
+    if (!_.isEmpty(extension)) contactObjects.push({ data: `Ext: ${extension}`, onPress: () => Alert.alert('Extension', `Dial this extension from your office phone.`), isText: true })
+    else contactObjects.push({ data: 'Contact:  ', onPress: () => {}, isText: true })
+
     if (!_.isEmpty(mobileNumber)) contactObjects.push({ data: images.call, onPress: () => Linking.openURL(`tel:${mobileNumber}`) })
     if (!_.isEmpty(mobileNumber)) contactObjects.push({ data: images.chat, onPress: () => Linking.openURL(`sms:${mobileNumber}&body=${body}`) })
     if (!_.isEmpty(emailAddress)) contactObjects.push({ data: images.email, onPress: () => Linking.openURL(`mailto:${emailAddress}?subject=${subject}&body=${body}`) })
@@ -68,7 +71,7 @@ export default class Card extends Component {
             contactObjects.map((contact, index) => {
               return (
                 <View style={styles.contactIconAndSeparator} key={index}>
-                  <TouchableOpacity onPress={contact.onPress} activeOpacity={0.6} hitSlop={{top: 10, bottom: 10, left: 5, right: 5}}>
+                  <TouchableOpacity onPress={contact.onPress} activeOpacity={globalDictionary.ACTIVE_OPACITY} hitSlop={{top: 10, bottom: 10, left: 5, right: 5}}>
                     {
                       contact.isText
                         ? <Text style={styles.otherText}>{ contact.data }</Text>
@@ -93,8 +96,10 @@ export default class Card extends Component {
       <View style={styles.actionButtonArea}>
         {
           cardActions.map((cardAction, index) => {
+            const showButtonSeparator = cardActions.length === 2 && index === 1
+
             return (
-              <TouchableOpacity style={styles.actionButton} onPress={() => cardAction.action()} activeOpacity={0.6} key={index}>
+              <TouchableOpacity style={[styles.actionButton, showButtonSeparator && styles.actionButtonBorderLeft]} onPress={() => cardAction.action()} activeOpacity={globalDictionary.ACTIVE_OPACITY} key={index}>
                 <Image style={styles.actionIcon} source={cardAction.icon}/>
                 <Text style={styles.actionText}>{ _.toUpper(cardAction.text)}</Text>
               </TouchableOpacity>
