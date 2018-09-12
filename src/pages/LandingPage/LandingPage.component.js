@@ -2,7 +2,7 @@
 
 // External Dependencies
 import React, { Component } from 'react'
-import { Animated, Easing, View } from 'react-native'
+import { Animated, Easing, Keyboard, View } from 'react-native'
 
 import _ from 'lodash'
 
@@ -56,7 +56,7 @@ export default class LandingPage extends Component {
     }
 
     const onChangeText = (text) => {
-      this.setState({ searchText: text })
+      this.setState({ searchText: _.toUpper(text) })
     }
 
     const onSearchAreaEntry = () => {
@@ -75,6 +75,10 @@ export default class LandingPage extends Component {
     const onSearchAreaExit = () => {
     }
 
+    const onPress = () => {
+      Keyboard.dismiss()
+    }
+
     if (_.isUndefined(BackendMock.interactionList)) {
       blockedByLength = 0
       blockingLength = 0
@@ -88,10 +92,10 @@ export default class LandingPage extends Component {
         <Animated.Image style={[styles.headerImage, {height: animatedHeaderHeight, zIndex: animatedHeaderZindex}]} source={require('../../assets/images/HeaderImage.png')} />
         <Animated.View style={[styles.searchArea, {top: animatedSearchPosition}]}>
           <SearchArea blockedBy={blockedByLength} blocking={blockingLength} onChangeText={onChangeText} searchText={this.state.searchText}
-            onSearchAreaEntry={onSearchAreaEntry} onSearchAreaExit={onSearchAreaExit}
+            onPress={onPress} onSearchAreaEntry={onSearchAreaEntry} onSearchAreaExit={onSearchAreaExit}
           />
         </Animated.View>
-        <LandingPageCardList allUsers={BackendMock.allUsers} interactionList={BackendMock.interactionList} onScroll={onScroll()} />
+        <LandingPageCardList allUsers={BackendMock.allUsers} interactionList={BackendMock.interactionList} onScroll={onScroll()} searchText={this.state.searchText} />
       </View>
     )
   }

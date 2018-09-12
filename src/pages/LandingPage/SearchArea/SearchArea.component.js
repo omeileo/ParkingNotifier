@@ -2,16 +2,18 @@
 
 // External Dependencies
 import React from 'react'
-import { Image, Text, TextInput, View } from 'react-native'
+import { Image, KeyboardAvoidingView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
 // Internal Dependencies
 import colors from '../../../shared/styles/colorPalette.styles'
+import globalDictionary from '../../../shared/dictionaries/global.dictionary'
+import images from '../../../shared/dictionaries/images.dictionary';
 import styles from './SearchArea.styles'
 
-const SearchArea = function ({blockedBy, blocking, onChangeText, onSearchAreaEntry, onSearchAreaExit, searchText}) {
+const SearchArea = function ({blockedBy, blocking, onChangeText, onPress, onSearchAreaEntry, onSearchAreaExit, searchText}) {
   const getTitle = function getSearchAreaTitle () {
     const isBlockedBy = _.isFinite(blockedBy) && blockedBy !== 0
     const isBlocking = _.isFinite(blocking) && blocking !== 0
@@ -42,7 +44,7 @@ const SearchArea = function ({blockedBy, blocking, onChangeText, onSearchAreaEnt
       <View style={styles.seperator}/>
 
       <View style={styles.search}>
-        <View style={styles.searchField}>
+        <KeyboardAvoidingView style={styles.searchField}>
           <TextInput
             onChangeText={(text) => onChangeText(text)}
             onFocus={() => onSearchAreaEntry()}
@@ -57,13 +59,13 @@ const SearchArea = function ({blockedBy, blocking, onChangeText, onSearchAreaEnt
             autoCapitalize={'characters'}
             clearButtonMode={_.isEmpty(searchText) ? 'never' : 'always'}
             enablesReturnKeyAutomatically
-            returnKeyType={'done'}
+            returnKeyType={'search'}
           />
-        </View>
+        </KeyboardAvoidingView>
 
-        <View style={styles.searchIcon}>
-          <Image style={styles.searchIconImage} source={require('../../../assets/images/Search.png')} resizeMode={'contain'}/>
-        </View>
+        <TouchableOpacity style={styles.searchIcon} onPress={onPress} activeOpacity={globalDictionary.ACTIVE_OPACITY}>
+          <Image style={styles.searchIconImage} source={images.search}/>
+        </TouchableOpacity>
       </View>
     </View>
   )
@@ -73,6 +75,7 @@ SearchArea.propTypes = {
   blockedBy: PropTypes.number.isRequired,
   blocking: PropTypes.number.isRequired,
   onChangeText: PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
   onSearchAreaEntry: PropTypes.func.isRequired,
   onSearchAreaExit: PropTypes.func.isRequired,
   searchText: PropTypes.string.isRequired
