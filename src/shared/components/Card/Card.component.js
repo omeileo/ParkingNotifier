@@ -31,8 +31,9 @@ export default class Card extends Component {
   }
 
   getCardDetails = function () {
-    const { cardType, contactInfo: { mobileNumber, extension, emailAddress }, mainText, secondaryText } = this.props
+    const { cardType, contactInfo, mainText, secondaryText } = this.props
     const contactObjects = []
+    const isContactInfoEmpty = !_.isUndefined(contactInfo) ? Object.values(contactInfo).every(value => _.isEmpty(value)) : true
     let subject = ''
     let body = ''
 
@@ -53,12 +54,14 @@ export default class Card extends Component {
         break
     }
 
-    if (!_.isEmpty(extension)) contactObjects.push({ data: `Ext: ${extension}`, onPress: () => Alert.alert('Extension', `Dial this extension from your office phone.`), isText: true })
-    else contactObjects.push({ data: 'Contact:  ', onPress: () => {}, isText: true })
-
-    if (!_.isEmpty(mobileNumber)) contactObjects.push({ data: images.call, onPress: () => Linking.openURL(`tel:${mobileNumber}`) })
-    if (!_.isEmpty(mobileNumber)) contactObjects.push({ data: images.chat, onPress: () => Linking.openURL(`sms:${mobileNumber}&body=${body}`) })
-    if (!_.isEmpty(emailAddress)) contactObjects.push({ data: images.email, onPress: () => Linking.openURL(`mailto:${emailAddress}?subject=${subject}&body=${body}`) })
+    if (!isContactInfoEmpty) {
+      if (!_.isEmpty(contactInfo.extension)) contactObjects.push({ data: `Ext: ${contactInfo.extension}`, onPress: () => Alert.alert('Extension', `Dial this extension from your office phone.`), isText: true })
+      else contactObjects.push({ data: 'Contact:  ', onPress: () => {}, isText: true })
+  
+      if (!_.isEmpty(contactInfo.mobileNumber)) contactObjects.push({ data: images.call, onPress: () => Linking.openURL(`tel:${contactInfo.mobileNumber}`) })
+      if (!_.isEmpty(contactInfo.mobileNumber)) contactObjects.push({ data: images.chat, onPress: () => Linking.openURL(`sms:${contactInfo.mobileNumber}&body=${body}`) })
+      if (!_.isEmpty(contactInfo.emailAddress)) contactObjects.push({ data: images.email, onPress: () => Linking.openURL(`mailto:${contactInfo.emailAddress}?subject=${subject}&body=${body}`) })
+    }
 
     return (
       <View>
@@ -66,25 +69,28 @@ export default class Card extends Component {
 
         { !_.isEmpty(secondaryText) && <Text style={styles.secondaryText}>{secondaryText}</Text> }
 
-        <View style={styles.contactInfo}>
-          {
-            contactObjects.map((contact, index) => {
-              return (
-                <View style={styles.contactIconAndSeparator} key={index}>
-                  <TouchableOpacity onPress={contact.onPress} activeOpacity={globalDictionary.ACTIVE_OPACITY} hitSlop={{top: 10, bottom: 10, left: 5, right: 5}}>
-                    {
-                      contact.isText
-                        ? <Text style={styles.otherText}>{ contact.data }</Text>
-                        : <Image style={styles.contactIcon} source={contact.data}/>
-                    }
-                  </TouchableOpacity>
-
-                  { ((index + 1) < contactObjects.length ) && contact.data !== 'Contact:  ' && <Text style={styles.contactIconSeparator}>|</Text>}
-                </View>
-              )
-            })
-          }
-        </View>
+        {
+          !isContactInfoEmpty &&
+          <View style={styles.contactInfo}>
+            {
+              contactObjects.map((contact, index) => {
+                return (
+                  <View style={styles.contactIconAndSeparator} key={index}>
+                    <TouchableOpacity onPress={contact.onPress} activeOpacity={globalDictionary.ACTIVE_OPACITY} hitSlop={{top: 10, bottom: 10, left: 5, right: 5}}>
+                      {
+                        contact.isText
+                          ? <Text style={styles.otherText}>{ contact.data }</Text>
+                          : <Image style={styles.contactIcon} source={contact.data}/>
+                      }
+                    </TouchableOpacity>
+  
+                    { ((index + 1) < contactObjects.length ) && contact.data !== 'Contact:  ' && <Text style={styles.contactIconSeparator}>|</Text>}
+                  </View>
+                )
+              })
+            }
+          </View>
+        }
       </View>
     )
   }
@@ -116,7 +122,7 @@ export default class Card extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.informationSection}>
-          <Image style={styles.cardImage} source={cardImage} resizeMode={'cover'}/>
+          <Image style={styles.cardImage} source={cardImage}/>
           { this.getCardDetails() }
         </View>
 

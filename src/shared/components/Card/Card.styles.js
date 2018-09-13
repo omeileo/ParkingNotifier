@@ -26,10 +26,8 @@ export default StyleSheet.create({
   },
 
   cardImage: {
+    ...DefaultStyles.icon.size.large,
     marginRight: getWidthPercentage(15),
-    height: getHeightPercentage(35),
-    width: getHeightPercentage(35),
-    resizeMode: 'contain'
   },
 
   mainText: {

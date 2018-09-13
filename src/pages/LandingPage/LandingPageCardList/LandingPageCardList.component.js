@@ -16,6 +16,7 @@ import images from '../../../shared/dictionaries/images.dictionary'
 import styles from './LandingPageCardList.styles'
 
 const LandingPageCardList = function ({ allUsers, interactionList, onScroll, searchText }) {
+  const noInteractions = _.isEmpty(interactionList.blockedBy) && _.isEmpty(interactionList.blocking)
 
   const getList = function (list, status) {
     const isFilteredList = status === globalDictionary.interactionStatus.none
@@ -87,34 +88,37 @@ const LandingPageCardList = function ({ allUsers, interactionList, onScroll, sea
     return cardActions
   }
 
-  const noInteractions = _.isEmpty(interactionList.blockedBy) && _.isEmpty(interactionList.blocking)
-
-  if (!_.isEmpty(searchText)) {
-    const filteredUsers = allUsers.filter(user => { return user.licencePlateNumber.indexOf(searchText) > -1 })
-
-    return (
-      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false} onScroll={onScroll} scrollEventThrottle={16}>
-        { getList(filteredUsers, globalDictionary.interactionStatus.none) }
-      </ScrollView>
-    )
-  } else if (noInteractions) {
-    return (
-      <View style={styles.container}>
+  const getReturnList = function () {
+    if (!_.isEmpty(searchText)) {
+      const filteredUsers = allUsers.filter(user => { return user.licencePlateNumber.indexOf(searchText) > -1 })
+  
+      return (
+        getList(filteredUsers, globalDictionary.interactionStatus.none)
+      )
+    } else if (noInteractions) {
+      return (
         <Card
           cardImage={images.happyCar}
           mainText={dictionary.noInteractions.mainText}
           secondaryText={dictionary.noInteractions.secondaryText}
+          cardType={globalDictionary.interactionStatus.none}
         />
-      </View>
-    )
-  } else {
-    return (
-      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false} onScroll={onScroll} scrollEventThrottle={16}>
-        { getList(getInteractionList(interactionList.blocking), globalDictionary.interactionStatus.blocking) }
-        { getList(getInteractionList(interactionList.blockedBy), globalDictionary.interactionStatus.blocked) }
-      </ScrollView>
-    )
+      )
+    } else {
+      return (
+        <View>
+          { getList(getInteractionList(interactionList.blocking), globalDictionary.interactionStatus.blocking) }
+          { getList(getInteractionList(interactionList.blockedBy), globalDictionary.interactionStatus.blocked) }
+        </View>
+      )
+    }
   }
+
+  return (
+    <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false} onScroll={onScroll} scrollEventThrottle={16}>
+      { getReturnList() }
+    </ScrollView>
+  )
 }
 
 LandingPageCardList.propTypes = {
