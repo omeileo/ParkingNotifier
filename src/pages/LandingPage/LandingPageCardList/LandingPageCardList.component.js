@@ -41,8 +41,8 @@ const LandingPageCardList = function ({ allUsers, interactionList, onScroll, sea
                   mainText={user.licencePlateNumber}
                   secondaryText={carDetails}
                   contactInfo={user.contact}
-                  cardActions={getCardActions(status)}
-                  cardType={status}
+                  cardActions={getCardActions(getInteractionStatus(user))}
+                  cardType={getInteractionStatus(user)}
                   key={index}
                 />  
               )
@@ -53,6 +53,18 @@ const LandingPageCardList = function ({ allUsers, interactionList, onScroll, sea
     } else if (isFilteredList) return (
       <Text style={styles.listHeader}>Licence Plate # Not Found</Text>
     )
+  }
+
+  const getInteractionStatus = function getInteractionStatusOfUser (user) {
+    let interactionStatus
+
+    if (!_.isUndefined(_.find(interactionList.blocking, (licencePlateNumber) => licencePlateNumber === user.licencePlateNumber ))) {
+      interactionStatus = globalDictionary.interactionStatus.blocking
+    } else if (!_.isUndefined(_.find(interactionList.blockedBy, (licencePlateNumber) => licencePlateNumber === user.licencePlateNumber ))) {
+      interactionStatus = globalDictionary.interactionStatus.blocked
+    } else interactionStatus = globalDictionary.interactionStatus.none
+
+    return interactionStatus
   }
 
   const getInteractionList = function dynamicallyGenerateVerboseInteractionList (list) {
